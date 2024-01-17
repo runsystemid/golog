@@ -1,4 +1,4 @@
-module github.com/runsystemid/golog
+module runsystemid/golog
 
 go 1.21.3
 
