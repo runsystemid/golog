@@ -72,3 +72,11 @@ Just put true in Stdout config attribute to print the log in console.
 ### Rotate
 
 Log file will be auto rotated based on file size. If the file size bigger than the config, will be saved to a new file with additional date in file name.
+
+## Contributing
+
+Contributions are welcome! Please follow the [Contribution Guidelines](CONTRIBUTION.md).
+
+## License
+
+This project is licensed under the MIT License.
