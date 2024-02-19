@@ -1,4 +1,8 @@
-# Logger
+# 🔪 Golog
+
+[![Go Report Card](https://goreportcard.com/badge/github.com/runsystemid/golog)](https://goreportcard.com/report/github.com/runsystemid/golog)
+[![GoDoc](https://godoc.org/github.com/runsystemid/golog?status.svg)](https://godoc.org/github.com/runsystemid/golog)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 This library is used to standardized log message for Runsystem service.
 You can use this library to simplify your service logging setup.
@@ -40,7 +44,7 @@ There some required configs. Make sure to initialize the values first. Best prac
 Initialize the loader by using
 
 ```golang
-loggerConfig := logger.Config{
+loggerConfig := golog.Config{
     App:             yourConfig.AppName,
     AppVer:          yourConfig.AppVersion,
     Env:             yourConfig.Environment,
@@ -52,10 +56,20 @@ loggerConfig := logger.Config{
     Stdout:          yourConfig.Stdout,
 }
 
-logger.Loader(loggerConfig)
+golog.Loader(loggerConfig)
 ```
 
-Now you can use the logger from anywhere in your project.
+Now you can use `golog` from anywhere in your project.
+
+Example:
+
+- `golog.Info(yourcontext, message)` to print the log.
+
+- `golog.Error(yourcontext, message, err)` to print error log.
+
+other interface `golog.Debug`, `golog.Warn`, `golog.Fatal`, `golog.Panic` also available.
+
+Make sure to add value to these keys `traceId`, `srcIP`, `port`, `path` in your context to make it easier to trace.
 
 ### Print Log
 
