@@ -12,6 +12,11 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+const (
+	PASSWORD = "password"
+	LICENSE  = "license"
+)
+
 type Log struct {
 	logger    *zap.Logger
 	loggerTDR *zap.Logger
@@ -192,7 +197,7 @@ func sanitizeBody(reqBody interface{}) interface{} {
 		}
 
 		for key, value := range bodyMap {
-			if strings.Contains(key, "password") {
+			if isSensitiveField(key) {
 				bodyMap[key] = strings.Repeat("*", len(value.(string)))
 			} else {
 				bodyMap[key] = value
@@ -203,6 +208,16 @@ func sanitizeBody(reqBody interface{}) interface{} {
 	}
 
 	return reqBody
+}
+
+func isSensitiveField(key string) bool {
+	var fields = []string{PASSWORD, LICENSE}
+	for _, field := range fields {
+		if strings.Contains(key, field) {
+			return true
+		}
+	}
+	return false
 }
 
 func populateFieldFromContext(ctx context.Context) []zap.Field {
