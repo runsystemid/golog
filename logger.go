@@ -4,11 +4,17 @@ import (
 	"context"
 	"encoding/json"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+)
+
+const (
+	PASSWORD = "password"
+	LICENSE  = "license"
 )
 
 type Log struct {
@@ -143,9 +149,10 @@ func (l *Log) Panic(ctx context.Context, msg string, err error, fields ...zap.Fi
 
 func (l *Log) TDR(ctx context.Context, log LogModel) {
 	fields := populateFieldFromContext(ctx)
+
 	fields = append(fields, zap.String("correlationID", log.CorrelationID))
-	fields = append(fields, zap.Any("header", log.Header))
-	fields = append(fields, zap.Any("request", toJSON(log.Request)))
+	fields = append(fields, zap.Any("header", removeAuth(log.Header)))
+	fields = append(fields, zap.Any("request", toJSON(sanitizeBody(log.Request))))
 	fields = append(fields, zap.String("statusCode", log.StatusCode))
 	fields = append(fields, zap.Uint64("httpStatus", log.HttpStatus))
 	fields = append(fields, zap.Any("response", toJSON(log.Response)))
@@ -171,6 +178,46 @@ func toJSON(object interface{}) interface{} {
 		return jsonobj
 	}
 	return object
+}
+
+func removeAuth(header interface{}) interface{} {
+	if mapHeader, ok := header.(map[string]string); ok {
+		delete(mapHeader, "Authorization")
+		return mapHeader
+	}
+
+	return header
+}
+
+func sanitizeBody(reqBody interface{}) interface{} {
+	if reqByte, ok := reqBody.([]byte); ok {
+		bodyMap := make(map[string]interface{}, 0)
+		if err := json.Unmarshal(reqByte, &bodyMap); err != nil {
+			return string(reqByte)
+		}
+
+		for key, value := range bodyMap {
+			if isSensitiveField(key) {
+				bodyMap[key] = strings.Repeat("*", len(value.(string)))
+			} else {
+				bodyMap[key] = value
+			}
+		}
+
+		return bodyMap
+	}
+
+	return reqBody
+}
+
+func isSensitiveField(key string) bool {
+	var fields = []string{PASSWORD, LICENSE}
+	for _, field := range fields {
+		if strings.Contains(key, field) {
+			return true
+		}
+	}
+	return false
 }
 
 func populateFieldFromContext(ctx context.Context) []zap.Field {
