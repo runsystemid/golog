@@ -1,8 +1,8 @@
 # Contribution Guidelines
 
-Thank you for considering contributing to my project! I welcome contributions from the community to improve and enhance the functionality of my Kafkid Service.
+Thank you for considering contributing to this project! We welcome contributions from the community to improve and enhance the functionality of this library.
 
-Please take a moment to review this document in order to make the contribution process smooth and effective for everyone.
+Please take a moment to review this document to make the contribution process smooth and effective for everyone.
 
 ## How to Contribute
 
@@ -11,7 +11,7 @@ Please take a moment to review this document in order to make the contribution p
 2. Clone the forked repository to your local machine:
 
    ```bash
-   git clone https://github.com/tommynurwantoro/kafkid.git
+   git clone https://github.com/runsystemid/golog.git
    ```
 
 3. Create a new branch for your feature or bug fix:
