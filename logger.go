@@ -152,10 +152,10 @@ func (l *Log) TDR(ctx context.Context, log LogModel) {
 
 	fields = append(fields, zap.String("correlationID", log.CorrelationID))
 	fields = append(fields, zap.Any("header", removeAuth(log.Header)))
-	fields = append(fields, zap.Any("request", toJSON(sanitizeBody(log.Request))))
+	fields = append(fields, zap.Any("request", toJSON(maskField(log.Request))))
 	fields = append(fields, zap.String("statusCode", log.StatusCode))
 	fields = append(fields, zap.Uint64("httpStatus", log.HttpStatus))
-	fields = append(fields, zap.Any("response", toJSON(log.Response)))
+	fields = append(fields, zap.Any("response", toJSON(maskField(log.Response))))
 	fields = append(fields, zap.Int64("rt", log.ResponseTime.Milliseconds()))
 	fields = append(fields, zap.Any("error", toJSON(log.Error)))
 	fields = append(fields, zap.Any("otherData", toJSON(log.OtherData)))
@@ -189,11 +189,11 @@ func removeAuth(header interface{}) interface{} {
 	return header
 }
 
-func sanitizeBody(reqBody interface{}) interface{} {
-	if reqByte, ok := reqBody.([]byte); ok {
+func maskField(body interface{}) interface{} {
+	if bodyByte, ok := body.([]byte); ok {
 		bodyMap := make(map[string]interface{}, 0)
-		if err := json.Unmarshal(reqByte, &bodyMap); err != nil {
-			return string(reqByte)
+		if err := json.Unmarshal(bodyByte, &bodyMap); err != nil {
+			return string(bodyByte)
 		}
 
 		for key, value := range bodyMap {
@@ -207,15 +207,12 @@ func sanitizeBody(reqBody interface{}) interface{} {
 		return bodyMap
 	}
 
-	return reqBody
+	return body
 }
 
 func isSensitiveField(key string) bool {
-	var fields = []string{PASSWORD, LICENSE}
-	for _, field := range fields {
-		if strings.Contains(key, field) {
-			return true
-		}
+	if strings.Contains(key, PASSWORD) || strings.Contains(key, LICENSE) {
+		return true
 	}
 	return false
 }
