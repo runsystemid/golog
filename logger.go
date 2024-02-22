@@ -94,13 +94,13 @@ func NewLogger(conf Config) LoggerInterface {
 
 	logger := zap.New(core, zap.AddStacktrace(zap.ErrorLevel), zap.AddCallerSkip(2)).With(
 		zap.String("app", conf.App),
-		zap.String("appVer", conf.AppVer),
+		zap.String("appVer", appVer),
 		zap.String("env", conf.Env),
 	)
 
 	loggerTDR := zap.New(coreTDR, zap.AddStacktrace(zap.ErrorLevel), zap.AddCallerSkip(2)).With(
 		zap.String("app", conf.App),
-		zap.String("appVer", conf.AppVer),
+		zap.String("appVer", appVer),
 		zap.String("env", conf.Env),
 	)
 
