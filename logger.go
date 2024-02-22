@@ -84,6 +84,14 @@ func NewLogger(conf Config) LoggerInterface {
 		)
 	}
 
+	appVer := conf.AppVer
+
+	content, err := os.ReadFile("version.txt")
+	if err == nil {
+		c := string(content)
+		appVer = strings.TrimSuffix(c, "/n")
+	}
+
 	logger := zap.New(core, zap.AddStacktrace(zap.ErrorLevel), zap.AddCallerSkip(2)).With(
 		zap.String("app", conf.App),
 		zap.String("appVer", conf.AppVer),
