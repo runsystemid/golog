@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/natefinch/lumberjack"
+	"github.com/valyala/fasthttp"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -189,9 +190,9 @@ func toJSON(object interface{}) interface{} {
 }
 
 func removeAuth(header interface{}) interface{} {
-	if mapHeader, ok := header.(map[string]string); ok {
-		delete(mapHeader, "Authorization")
-		return mapHeader
+	if mapHeader, ok := header.(fasthttp.RequestHeader); ok {
+		mapHeader.Del("Authorization")
+		return string(mapHeader.Header())
 	}
 
 	return header
