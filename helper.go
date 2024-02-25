@@ -2,53 +2,28 @@ package golog
 
 import (
 	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 )
 
 func NewStringField(key string, value string) zap.Field {
-	return zap.Field{
-		Key:       key,
-		Type:      zapcore.StringType,
-		Interface: value,
-	}
+	return zap.String(key, value)
 }
 
 func NewIntField(key string, value int) zap.Field {
-	return zap.Field{
-		Key:       key,
-		Type:      zapcore.Int32Type,
-		Interface: int64(value),
-	}
+	return zap.Int(key, value)
 }
 
 func NewInt64Field(key string, value int64) zap.Field {
-	return zap.Field{
-		Key:       key,
-		Type:      zapcore.Int64Type,
-		Interface: value,
-	}
+	return zap.Int64(key, value)
 }
 
 func NewObjectField(key string, value interface{}) zap.Field {
-	return zap.Field{
-		Key:       key,
-		Type:      zapcore.ObjectMarshalerType,
-		Interface: value,
-	}
+	return zap.Any(key, value)
 }
 
-func NewArrayField(key string, value []interface{}) zap.Field {
-	return zap.Field{
-		Key:       key,
-		Type:      zapcore.ArrayMarshalerType,
-		Interface: value,
-	}
+func NewArrayStringField(key string, value []string) zap.Field {
+	return zap.Strings(key, value)
 }
 
 func NewBooleanField(key string, value bool) zap.Field {
-	return zap.Field{
-		Key:       key,
-		Type:      zapcore.BoolType,
-		Interface: value,
-	}
+	return zap.Bool(key, value)
 }
