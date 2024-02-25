@@ -47,6 +47,7 @@ func NewLogger(conf Config) LoggerInterface {
 	encoderConfig.TimeKey = "timestamp"
 	encoderConfig.LevelKey = "logLevel"
 	encoderConfig.MessageKey = "message"
+	encoderConfig.StacktraceKey = "stacktrace"
 	encoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout(time.RFC3339)
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 
@@ -99,7 +100,7 @@ func NewLogger(conf Config) LoggerInterface {
 		zap.String("env", conf.Env),
 	)
 
-	loggerTDR := zap.New(coreTDR, zap.AddStacktrace(zap.ErrorLevel), zap.AddCallerSkip(2)).With(
+	loggerTDR := zap.New(coreTDR, zap.AddCallerSkip(2)).With(
 		zap.String("app", conf.App),
 		zap.String("appVer", appVer),
 		zap.String("env", conf.Env),
