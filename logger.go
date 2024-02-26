@@ -13,10 +13,17 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-const (
-	PASSWORD = "password"
-	LICENSE  = "license"
-)
+var SENSITIVE_HEADER = map[string]bool{
+	"Authorization": true,
+	"Signature":     true,
+	"Apikey":        true,
+}
+
+var SENSITIVE_ATTR = map[string]bool{
+	"password": true,
+	"license":  true,
+	"token":    true,
+}
 
 type Log struct {
 	logger    *zap.Logger
@@ -192,7 +199,9 @@ func toJSON(object interface{}) interface{} {
 
 func removeAuth(header interface{}) interface{} {
 	if mapHeader, ok := header.(fasthttp.RequestHeader); ok {
-		mapHeader.Del("Authorization")
+		for key := range SENSITIVE_HEADER {
+			mapHeader.Del(key)
+		}
 		return string(mapHeader.Header())
 	}
 
@@ -221,8 +230,8 @@ func maskField(body interface{}) interface{} {
 }
 
 func isSensitiveField(key string) bool {
-	if strings.Contains(key, PASSWORD) || strings.Contains(key, LICENSE) {
-		return true
+	if v, ok := SENSITIVE_ATTR[strings.ToLower(key)]; ok {
+		return v
 	}
 	return false
 }
