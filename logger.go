@@ -239,8 +239,8 @@ func maskField(body interface{}) interface{} {
 }
 
 func isSensitiveField(key string) bool {
-	if v, ok := SENSITIVE_ATTR[strings.ToLower(key)]; ok {
-		return v
+	if _, ok := SENSITIVE_ATTR[strings.ToLower(key)]; ok {
+		return true
 	}
 	return false
 }
