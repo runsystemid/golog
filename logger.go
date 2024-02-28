@@ -3,6 +3,7 @@ package golog
 import (
 	"context"
 	"encoding/json"
+	"net/http"
 	"os"
 	"strings"
 	"time"
@@ -13,10 +14,10 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-var SENSITIVE_HEADER = map[string]bool{
-	"Authorization": true,
-	"Signature":     true,
-	"Apikey":        true,
+var SENSITIVE_HEADER = []string{
+	"Authorization",
+	"Signature",
+	"Apikey",
 }
 
 var SENSITIVE_ATTR = map[string]bool{
@@ -198,11 +199,19 @@ func toJSON(object interface{}) interface{} {
 }
 
 func removeAuth(header interface{}) interface{} {
+	// Fasthttp
 	if mapHeader, ok := header.(fasthttp.RequestHeader); ok {
-		for key := range SENSITIVE_HEADER {
-			mapHeader.Del(key)
+		for _, val := range SENSITIVE_HEADER {
+			mapHeader.Del(val)
 		}
 		return string(mapHeader.Header())
+	}
+
+	// Http
+	if mapHeader, ok := header.(http.Header); ok {
+		for _, val := range SENSITIVE_HEADER {
+			mapHeader.Del(val)
+		}
 	}
 
 	return header
