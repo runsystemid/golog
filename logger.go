@@ -234,7 +234,7 @@ func maskField(body interface{}) interface{} {
 				bodyMap[key] = maskField(valueByte)
 			default:
 				if isSensitiveField(key) {
-					bodyMap[key] = strings.Repeat("*", len(value.(string)))
+					bodyMap[key] = strings.Repeat("*", 5)
 				} else {
 					bodyMap[key] = value
 				}
