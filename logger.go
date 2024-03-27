@@ -23,6 +23,7 @@ var SENSITIVE_HEADER = []string{
 var SENSITIVE_ATTR = map[string]bool{
 	"password":      true,
 	"license":       true,
+	"license_code":  true,
 	"token":         true,
 	"access_token":  true,
 	"refresh_token": true,
@@ -227,10 +228,16 @@ func maskField(body interface{}) interface{} {
 		}
 
 		for key, value := range bodyMap {
-			if isSensitiveField(key) {
-				bodyMap[key] = strings.Repeat("*", len(value.(string)))
-			} else {
-				bodyMap[key] = value
+			switch value.(type) {
+			case map[string]interface{}:
+				valueByte, _ := json.Marshal(value)
+				bodyMap[key] = maskField(valueByte)
+			default:
+				if isSensitiveField(key) {
+					bodyMap[key] = strings.Repeat("*", 5)
+				} else {
+					bodyMap[key] = value
+				}
 			}
 		}
 
