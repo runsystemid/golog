@@ -21,9 +21,11 @@ var SENSITIVE_HEADER = []string{
 }
 
 var SENSITIVE_ATTR = map[string]bool{
-	"password": true,
-	"license":  true,
-	"token":    true,
+	"password":      true,
+	"license":       true,
+	"token":         true,
+	"access_token":  true,
+	"refresh_token": true,
 }
 
 type Log struct {
