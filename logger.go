@@ -248,7 +248,10 @@ func removeAuth(header interface{}) interface{} {
 }
 
 func maskField(body interface{}) interface{} {
-	if bodyByte, ok := body.([]byte); ok {
+	switch v := body.(type) {
+	//this is for request
+	case []byte:
+		bodyByte := v
 		bodyMap := make(map[string]interface{}, 0)
 		if err := json.Unmarshal(bodyByte, &bodyMap); err != nil {
 			return string(bodyByte)
@@ -269,6 +272,29 @@ func maskField(body interface{}) interface{} {
 		}
 
 		return bodyMap
+	default:
+		//this is for response
+		data, ok := body.(string)
+		innerData := make(map[string]interface{})
+		if ok {
+			ok := json.Unmarshal([]byte(data), &innerData)
+			if ok == nil {
+				for key, value := range innerData {
+					switch value.(type) {
+					case map[string]interface{}:
+						valueByte, _ := json.Marshal(value)
+						innerData[key] = maskField(valueByte)
+					default:
+						if isSensitiveField(key) {
+							innerData[key] = strings.Repeat("*", 5)
+						} else {
+							innerData[key] = value
+						}
+					}
+				}
+				return innerData
+			}
+		}
 	}
 
 	return body
