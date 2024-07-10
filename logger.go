@@ -267,7 +267,7 @@ func maskField(body interface{}) interface{} {
 				if isSensitiveField(key) {
 					bodyMap[key] = strings.Repeat("*", 5)
 				} else if isExcludedField(key) {
-					continue
+					bodyMap[key] = "REDACTED"
 				} else {
 					bodyMap[key] = value
 				}
