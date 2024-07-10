@@ -18,6 +18,7 @@ var SENSITIVE_HEADER = []string{
 	"Authorization",
 	"Signature",
 	"Apikey",
+	"Content-Disposition",
 }
 
 var SENSITIVE_ATTR = map[string]bool{
@@ -27,33 +28,33 @@ var SENSITIVE_ATTR = map[string]bool{
 	"token":                    true,
 	"access_token":             true,
 	"refresh_token":            true,
-	"bank_ac_no":               true, //bank account number
-	"id_number":                true, //id number, equivalent to KTP in Indonesia
-	"mobile":                   true, //mobile number
-	"npwp":                     true, //tax number, equivalent to NPWP in Indonesia
-	"phone":                    true, //phone number
-	"card_no":                  true, //social security number
-	"basic_salary":             true, //basic salary payslip
-	"brutto":                   true, //brutto payslip
-	"employment_deduction":     true, //employment deduction payslip
-	"functional_allowance":     true, //functional allowance payslip
-	"health_allowance":         true, //health allowance payslip
-	"health_deduction":         true, //health deduction payslip
-	"incentive_income_tax_21":  true, //incentive income tax payslip
-	"income_tax_21":            true, //income tax payslip
-	"jht_allowance":            true, //jht allowance payslip
-	"jkk_allowance":            true, //jkk allowance payslilp
-	"jkm_allowance":            true, //jkm allowance payslip
-	"jkn_allowance":            true, //jkn allowance payslip
-	"loan":                     true, //loan payslip
-	"other_deduction":          true, //other deduction payslip
-	"position_allowance":       true, //position allowance payslip
-	"skill_allowance":          true, //skill allowance payslip
-	"special_region_allowance": true, //special region allowance payslip
-	"take_home_pay":            true, //take home pay payslip
-	"total_allowance":          true, //total allowance payslip
-	"total_deduction":          true, //total deduction payslip
-	"total_wages":              true, //total wages payslip
+	"bank_ac_no":               true, // bank account number
+	"id_number":                true, // id number, equivalent to KTP in Indonesia
+	"mobile":                   true, // mobile number
+	"npwp":                     true, // tax number, equivalent to NPWP in Indonesia
+	"phone":                    true, // phone number
+	"card_no":                  true, // social security number
+	"basic_salary":             true, // basic salary payslip
+	"brutto":                   true, // brutto payslip
+	"employment_deduction":     true, // employment deduction payslip
+	"functional_allowance":     true, // functional allowance payslip
+	"health_allowance":         true, // health allowance payslip
+	"health_deduction":         true, // health deduction payslip
+	"incentive_income_tax_21":  true, // incentive income tax payslip
+	"income_tax_21":            true, // income tax payslip
+	"jht_allowance":            true, // jht allowance payslip
+	"jkk_allowance":            true, // jkk allowance payslilp
+	"jkm_allowance":            true, // jkm allowance payslip
+	"jkn_allowance":            true, // jkn allowance payslip
+	"loan":                     true, // loan payslip
+	"other_deduction":          true, // other deduction payslip
+	"position_allowance":       true, // position allowance payslip
+	"skill_allowance":          true, // skill allowance payslip
+	"special_region_allowance": true, // special region allowance payslip
+	"take_home_pay":            true, // take home pay payslip
+	"total_allowance":          true, // total allowance payslip
+	"total_deduction":          true, // total deduction payslip
+	"total_wages":              true, // total wages payslip
 }
 
 type Log struct {
