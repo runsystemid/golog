@@ -18,7 +18,6 @@ var SENSITIVE_HEADER = []string{
 	"Authorization",
 	"Signature",
 	"Apikey",
-	"Content-Disposition",
 }
 
 var SENSITIVE_ATTR = map[string]bool{
@@ -55,6 +54,10 @@ var SENSITIVE_ATTR = map[string]bool{
 	"total_allowance":          true, // total allowance payslip
 	"total_deduction":          true, // total deduction payslip
 	"total_wages":              true, // total wages payslip
+}
+
+var EXCLUDED_FIELD = map[string]bool{
+	"Content-Disposition": true,
 }
 
 type Log struct {
@@ -263,6 +266,8 @@ func maskField(body interface{}) interface{} {
 			default:
 				if isSensitiveField(key) {
 					bodyMap[key] = strings.Repeat("*", 5)
+				} else if isExcludedField(key) {
+					continue
 				} else {
 					bodyMap[key] = value
 				}
@@ -277,6 +282,13 @@ func maskField(body interface{}) interface{} {
 
 func isSensitiveField(key string) bool {
 	if _, ok := SENSITIVE_ATTR[strings.ToLower(key)]; ok {
+		return true
+	}
+	return false
+}
+
+func isExcludedField(key string) bool {
+	if _, ok := EXCLUDED_FIELD[strings.ToLower(key)]; ok {
 		return true
 	}
 	return false
