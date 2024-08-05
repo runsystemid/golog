@@ -6,6 +6,7 @@ import (
 	"go.uber.org/zap"
 )
 
+//go:generate mockgen -destination=mocks/service.go -package=mocks -source=service.go
 type LoggerInterface interface {
 	Debug(ctx context.Context, message string, fields ...zap.Field)
 	Info(ctx context.Context, message string, fields ...zap.Field)
