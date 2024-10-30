@@ -9,6 +9,7 @@ type LogModel struct {
 	IP            string        `json:"ip"`
 	Port          string        `json:"port"`
 	Path          string        `json:"path"`
+	Method        string        `json:"method"`
 	Header        interface{}   `json:"header"`
 	Request       interface{}   `json:"request"`
 	StatusCode    string        `json:"statusCode"`
