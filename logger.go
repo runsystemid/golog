@@ -54,6 +54,7 @@ var SENSITIVE_ATTR = map[string]bool{
 	"total_allowance":          true, //total allowance payslip
 	"total_deduction":          true, //total deduction payslip
 	"total_wages":              true, //total wages payslip
+	"salary_adjustment":        true, //salary adjustment payslip (negatif & posistif amount)
 }
 
 type Log struct {
