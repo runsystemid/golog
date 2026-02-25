@@ -12,6 +12,7 @@ type LogModel struct {
 	Method        string        `json:"method"`
 	Header        interface{}   `json:"header"`
 	Request       interface{}   `json:"request"`
+	Query         interface{}   `json:"query"`
 	StatusCode    string        `json:"statusCode"`
 	HttpStatus    uint64        `json:"httpStatus"`
 	Response      interface{}   `json:"response"`
