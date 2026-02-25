@@ -201,10 +201,10 @@ func (l *Log) TDR(ctx context.Context, log LogModel) {
 
 	fields = append(fields, zap.String("correlationID", log.CorrelationID))
 	fields = append(fields, zap.Any("header", removeAuth(log.Header)))
+	fields = append(fields, zap.String("method", log.Method))
 	fields = append(fields, zap.Any("request", toJSON(maskField(log.Request))))
 	fields = append(fields, zap.Any("query", toJSON(log.Query)))
 	fields = append(fields, zap.String("statusCode", log.StatusCode))
-	fields = append(fields, zap.String("method", log.Method))
 	fields = append(fields, zap.Uint64("httpStatus", log.HttpStatus))
 	fields = append(fields, zap.Any("response", toJSON(maskField(log.Response))))
 	fields = append(fields, zap.Int64("rt", log.ResponseTime.Milliseconds()))
